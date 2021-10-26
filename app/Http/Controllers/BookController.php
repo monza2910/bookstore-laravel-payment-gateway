@@ -19,6 +19,8 @@ class BookController extends Controller
 
     public function checkout(Book $book)
     {
-        return view('book.checkout', compact('book'));
+        $tripay = new TripayController();
+        $chanels = $tripay->getPaymentChanels();
+        return view('book.checkout', compact('book','chanels'));
     }
 }
