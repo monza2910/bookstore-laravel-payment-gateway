@@ -11,14 +11,17 @@
             @foreach ($chanels as $chanel)
 
                 @if ($chanel->active == true)
-                <a href="{{ route('transaction.show', 'DEV-2131232') }}">
-                    <div class="bg-white p-5 h-32 w-36 rounded-md shadow-soft flex items-center">
+                <form action="{{ route('transaction.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="book_id" value="{{$book->id}}">
+                    <input type="hidden" name="method" value="{{$chanel->code}}">
+                    <button type="submit" class="bg-white p-5 h-32 w-36 rounded-md shadow-soft flex items-center">
                         <div>
                             <img src="{{asset('storage/bank/'. $chanel->code . '.png')}}" class="w-full" alt="">
                             <p class="mt-3 text-xs text-gray-600">Pay with Mandiri</p>
                         </div>
-                    </div>
-                </a>
+                    </button>
+                </form>
                 @else
                     
                 @endif
