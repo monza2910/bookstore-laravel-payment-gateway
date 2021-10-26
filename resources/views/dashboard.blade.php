@@ -36,35 +36,43 @@
                                         </tr>
                                     </thead>
                                     <tbody class="bg-white divide-y divide-gray-200">
+                                        @foreach ($transactions as $transaction)
                                         <tr>
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <div class="flex-shrink-0 h-10 w-10">
-                                                        <img class="h-10 w-10 rounded-full" src="{{ "https://picsum.photos/" . 100 }}" alt="">
+                                                        <img class="h-10 w-10 rounded-full" src="{{ "https://picsum.photos/" . 10 . $transaction->id }}" alt="">
                                                     </div>
                                                     <div class="ml-4">
                                                         <div class="text-sm font-medium text-gray-900">
-                                                            Jane Cooper
+                                                            {{$transaction->user->name}}
                                                         </div>
                                                         <div class="text-sm text-gray-500">
-                                                            jane.cooper@example.com
+                                                            {{$transaction->user->email}}
                                                         </div>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <div class="text-sm text-gray-900">Regional Paradigm Technician</div>
-                                                <div class="text-sm text-gray-500">Optimization</div>
+                                                <div class="text-sm text-gray-900">{{$transaction->book->title}}</div>
+                                                <div class="text-sm text-gray-500">{{$transaction->book->category}}</div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                Rp. 300.000
+                                                Rp. {{number_format($transaction->total_amount)}}
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                @if ($transaction->status == 'paid')
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 uppercase">
                                                     Paid
                                                 </span>
+                                                @else
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 uppercase">
+                                                    Unpaid
+                                                </span>
+                                                @endif
                                             </td>
                                         </tr>
+                                        @endforeach
 
                                         <!-- More people... -->
                                     </tbody>

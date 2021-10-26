@@ -41,10 +41,10 @@ class TripayController extends Controller
         $privateKey = config('tripay.private_key');
         $merchantCode = config('tripay.merchant_code');
         $merchantRef = 'MZ-' . time();
-
+        
         
         $user = auth()->user();
-
+        
         $data = [
             'method'            => $method,
             'merchant_ref'      => $merchantRef,
@@ -81,14 +81,49 @@ class TripayController extends Controller
             $err = curl_error($curl);
             
             curl_close($curl);
-
-            $response = json_decode($response)->data;
-            dd($response);
-
-            return $response ?: $err;
             
+            $response = json_decode($response)->data;
+            // dd($response);
+            
+            return $response ?: $err;
             
         }
         
+    public function detailTransaksi($reference)
+        {
+            
+            $apiKey = config('tripay.api_key');
+            
+            $payload = [
+                'reference'	=> $reference
+            ];
+            
+            $curl = curl_init();
+            
+            curl_setopt_array($curl, array(
+                CURLOPT_FRESH_CONNECT     => true,
+                CURLOPT_URL               => "https://tripay.co.id/api-sandbox/transaction/detail?".http_build_query($payload),
+                CURLOPT_RETURNTRANSFER    => true,
+                CURLOPT_HEADER            => false,
+                CURLOPT_HTTPHEADER        => array(
+                    "Authorization: Bearer ".$apiKey
+                ),
+                CURLOPT_FAILONERROR       => false,
+            ));
+            
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            
+            curl_close($curl);
+
+            $response = json_decode($response)->data;
+
+            // dd($response);   
+            
+            return $response ?: $err;
+            
     }
+        
+}
+    
     
