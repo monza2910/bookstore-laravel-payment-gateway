@@ -4,6 +4,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\Payment\TripayCallBackController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,5 +30,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
+
+Route::post('callback',[TripayCallBackController::class,'handle']);
 
 require __DIR__.'/auth.php';
