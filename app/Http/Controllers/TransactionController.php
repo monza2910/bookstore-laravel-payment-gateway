@@ -5,14 +5,19 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Transaction;
+use App\Services\TripayService;
+
 
 
 class TransactionController extends Controller
 {
+    public function __construct(TripayService $tripayService){
+        $this->tripayService = $tripayService;
+    }
+
     public function show($reference)
     {
-        $tripay = new TripayController();
-        $detail = $tripay->detailTransaksi($reference);
+        $detail = $this->tripayService->detailTransaksi($reference);
         return view('transaction.show',compact('detail'));
     }
 
@@ -22,8 +27,7 @@ class TransactionController extends Controller
         $book = Book::find($request->book_id);
         $method = $request->method;
         
-        $tripay = new TripayController();
-        $transaction = $tripay->requestTransaction($method, $book);
+        $transaction = $this->tripayService->requestTransaction($method, $book);
 
         // Create a new Data in Transaction Model 
         Transaction::create([

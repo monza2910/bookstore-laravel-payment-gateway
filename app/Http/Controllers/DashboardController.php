@@ -7,7 +7,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        $transactions = Transaction::all();
+        $transactions = Transaction::with('user','book')->latest()->get();
         return view('dashboard',compact('transactions'));
     }
 }
